@@ -11,6 +11,7 @@ abstract: >-
   its own beyond reporting the installed member versions. It requires Python
   3.12 or later.
 version: "0.1.0"
+date-released: "2026-09-24"
 authors:
   - family-names: Garrett
     given-names: Patrick T.
