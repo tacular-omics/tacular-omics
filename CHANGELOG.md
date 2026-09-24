@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- End-to-end tests across the member packages: a FASTA protein through digestion,
+  fragmentation (checked against `peptacular.fragment_arrays`), a synthetic spectrum
+  annotated with spxtacular, and an mzSpecLib written and streamed back with the peaks,
+  mzPAF annotations and ProForma unchanged; paftacular recomputes every fragment m/z.
+  A test that the `ToleranceUnit` and `Polarity` aliases of mzmlpy and tdfpy equal
+  `tacular.types`. The cross-package tests from the development workspace (mods,
+  mzPAF, isotope formulas, PEFF, mzML, tdfpy) moved here too.
+
 ## [0.1.0] (2026-09-24)
 
 ### Added

@@ -19,7 +19,7 @@ just install        # uv sync --all-extras
 just lint           # ruff check src tests scripts/smoke.py
 just format         # ruff isort fix + ruff format -- WRITES FILES
 just ty             # ty check src
-just test           # pytest tests (imports every member, checks pins)
+just test           # pytest tests (member imports, pins, cross-package end-to-end tests)
 just check          # lint + ty + test
 just smoke          # build the wheel, install it fresh from PyPI, import every member
 just check-version  # python scripts/release_version.py check
@@ -38,6 +38,10 @@ src/tacular_omics/
   __init__.py   # __version__ (version source), PACKAGES (member names, dependency order), versions()
   __main__.py   # main(): prints the versions; exit 1 if a member is missing. Also the `tacular-omics` script
 tests/test_members.py   # PACKAGES == dependencies, every member imports, installed versions satisfy the pins
+tests/conftest.py       # CV database fixtures, minimal mzML writer, PACKAGES (sibling checkouts, for example data)
+tests/test_pipeline_end_to_end.py  # FASTA -> digest -> fragments -> spectrum -> spxtacular -> mzSpecLib -> back
+tests/test_type_aliases.py         # mzmlpy / tdfpy ToleranceUnit, Polarity == tacular.types
+tests/test_*.py         # other cross-package tests: mods, mzPAF, isotope formulas, PEFF, mzML, tdfpy
 scripts/smoke.py        # import every member from an installed wheel (CI wheel job, publish.yml)
 scripts/release_version.py  # version sync/check, byte-identical copy of the workspace template
 ```
@@ -60,6 +64,12 @@ scripts/release_version.py  # version sync/check, byte-identical copy of the wor
 
 ## Gotchas
 
+- The tests are the cross-package end-to-end suite (moved here from the workspace's
+  `tests/integration/`; the workspace `just integration` runs them). They exercise the
+  member APIs, so a member's breaking change breaks them: they must pass against the
+  versions the pins allow. `test_tdf_smoke` and the mzmlpy example test read example
+  data from sibling checkouts (`TACULAR_OMICS_PACKAGES`, default: the workspace
+  `packages/`) and skip when it is absent, as in CI.
 - Inside the workspace, the members resolve to the local checkouts, so
   `test_installed_versions_satisfy_pins` fails as soon as a local member is bumped past
   a cap. That is the signal to raise the pins in the next tacular-omics release.
