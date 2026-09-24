@@ -1,0 +1,30 @@
+# tacular-omics
+
+> Meta-package: `pip install tacular-omics` installs the tacular-omics Python packages
+> for mass-spectrometry proteomics at a set of released versions tested together.
+
+It has no API of its own beyond `tacular_omics.versions()` (installed version of each
+member) and `python -m tacular_omics`. Import the member packages directly: tacular
+(ontology/reference lookups), psimodpy, unimodpy, uniprotptmpy (modification
+ontologies), fastatacular (FASTA), pefftacular (PEFF), mzmlpy (mzML), tdfpy (Bruker
+timsTOF), peptacular (ProForma peptides), paftacular (mzPAF annotations), spxtacular
+(spectrum processing). Extras: `[mcp]` (MCP servers), `[all]`. Requires Python >= 3.12.
+
+## Docs
+
+- [llms-full.txt](https://raw.githubusercontent.com/tacular-omics/tacular-omics/main/llms-full.txt): install, extras, pins, and where each member's own llms.txt lives
+- [README](https://github.com/tacular-omics/tacular-omics/blob/main/README.md): member table, version policy, citations
+- [CHANGELOG](https://github.com/tacular-omics/tacular-omics/blob/main/CHANGELOG.md): which member versions each release pins
+
+## API
+
+- [`__init__.py`](https://github.com/tacular-omics/tacular-omics/blob/main/src/tacular_omics/__init__.py): `versions()`, `PACKAGES`, `__version__`
+- [`pyproject.toml`](https://github.com/tacular-omics/tacular-omics/blob/main/pyproject.toml): the exact pins and extras
+
+## Optional
+
+- [tacular llms.txt](https://raw.githubusercontent.com/tacular-omics/tacular/main/llms.txt)
+- [peptacular llms.txt](https://raw.githubusercontent.com/tacular-omics/peptacular/main/llms.txt)
+- [spxtacular llms.txt](https://raw.githubusercontent.com/tacular-omics/spxtacular/main/llms.txt)
+- [GitHub organization](https://github.com/tacular-omics)
+- [PyPI package](https://pypi.org/project/tacular-omics/)

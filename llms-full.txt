@@ -1,0 +1,130 @@
+# tacular-omics: full usage guide
+
+`tacular-omics` is a meta-package. Installing it installs the tacular-omics Python
+packages for mass-spectrometry proteomics at a set of released versions tested
+together. It has no functionality of its own: import the member packages directly.
+Requires Python >= 3.12.
+
+## Install
+
+```bash
+pip install tacular-omics            # all eleven member packages
+pip install "tacular-omics[mcp]"     # plus every member MCP server
+pip install "tacular-omics[all]"     # plus every optional feature of every member
+```
+
+## API
+
+```python
+import tacular_omics
+tacular_omics.__version__     # version of the meta-package, e.g. "0.1.0"
+tacular_omics.PACKAGES        # tuple of member names, dependency order
+tacular_omics.versions()      # dict[str, str | None]: installed version per member, None if missing
+```
+
+`versions()` reads installed distribution metadata (`importlib.metadata`) and imports
+nothing. Command line: `python -m tacular_omics` (or the `tacular-omics` script) prints
+one line per member and exits 1 if any member is not installed.
+
+## Version policy
+
+Each member is pinned with a floor (the release in the tested set) and a cap (next
+major, or next minor for 0.x packages): e.g. `peptacular>=4.2,<5`, `mzmlpy>=0.9.3,<0.10`.
+Bug-fix and feature releases of members arrive automatically; breaking releases arrive
+only with a new tacular-omics release that raises the pins. The exact pins are in
+`pyproject.toml`; the CHANGELOG lists the set for each release.
+
+## Members
+
+Distribution name == import name for every member.
+
+### tacular
+
+Proteomics ontology and reference-data lookups: modifications (UNIMOD, PSI-MOD, RESID, XLMOD, GNOme, UniProt-PTM), amino acids, elements and isotopes, fragment ion types, neutral losses, proteases, monosaccharides.
+
+- Repository: https://github.com/tacular-omics/tacular
+- Usage guide: https://raw.githubusercontent.com/tacular-omics/tacular/main/llms-full.txt
+
+### psimodpy
+
+The PSI-MOD protein modification ontology: parse and query terms.
+
+- Repository: https://github.com/tacular-omics/psimodpy
+- Usage guide: https://raw.githubusercontent.com/tacular-omics/psimodpy/main/llms-full.txt
+- MCP server extra: `psimodpy[server]` (included in `tacular-omics[mcp]`)
+
+### unimodpy
+
+Parse and query the UNIMOD mass spectrometry modifications database.
+
+- Repository: https://github.com/tacular-omics/unimodpy
+- Usage guide: https://raw.githubusercontent.com/tacular-omics/unimodpy/main/llms-full.txt
+- MCP server extra: `unimodpy[server]` (included in `tacular-omics[mcp]`)
+
+### uniprotptmpy
+
+Parse and query the UniProt PTM controlled vocabulary list.
+
+- Repository: https://github.com/tacular-omics/uniprotptmpy
+- Usage guide: https://raw.githubusercontent.com/tacular-omics/uniprotptmpy/main/llms-full.txt
+- MCP server extra: `uniprotptmpy[server]` (included in `tacular-omics[mcp]`)
+
+### fastatacular
+
+Read and write FASTA sequence files, with UniProt header fields parsed.
+
+- Repository: https://github.com/tacular-omics/fastatacular
+- Usage guide: https://raw.githubusercontent.com/tacular-omics/fastatacular/main/llms-full.txt
+
+### pefftacular
+
+Read and write PEFF (PSI Extended FASTA Format) files.
+
+- Repository: https://github.com/tacular-omics/pefftacular
+- Usage guide: https://raw.githubusercontent.com/tacular-omics/pefftacular/main/llms-full.txt
+
+### mzmlpy
+
+Lightweight parser for mzML mass spectrometry files.
+
+- Repository: https://github.com/tacular-omics/mzmlpy
+- Usage guide: https://raw.githubusercontent.com/tacular-omics/mzmlpy/main/llms-full.txt
+- MCP server extra: `mzmlpy[mcp]` (included in `tacular-omics[mcp]`)
+
+### tdfpy
+
+Bruker timsTOF (TDF) data reader with centroiding and noise filtering.
+
+- Repository: https://github.com/tacular-omics/tdfpy
+- Usage guide: https://raw.githubusercontent.com/tacular-omics/tdfpy/main/llms-full.txt
+- MCP server extra: `tdfpy[mcp]` (included in `tacular-omics[mcp]`)
+
+### peptacular
+
+Parse, annotate and analyze ProForma 2.1 peptide and protein sequences (masses, fragments, digestion).
+
+- Repository: https://github.com/tacular-omics/peptacular
+- Usage guide: https://raw.githubusercontent.com/tacular-omics/peptacular/main/llms-full.txt
+- MCP server extra: `peptacular[mcp]` (included in `tacular-omics[mcp]`)
+
+### paftacular
+
+Parse, serialize and analyze HUPO-PSI mzPAF peak annotations.
+
+- Repository: https://github.com/tacular-omics/paftacular
+- Usage guide: https://raw.githubusercontent.com/tacular-omics/paftacular/main/llms-full.txt
+- MCP server extra: `paftacular[mcp]` (included in `tacular-omics[mcp]`)
+
+### spxtacular
+
+Mass spectrometry spectrum processing.
+
+- Repository: https://github.com/tacular-omics/spxtacular
+- Usage guide: https://raw.githubusercontent.com/tacular-omics/spxtacular/main/llms-full.txt
+
+## Gotchas
+
+- Do not `import tacular_omics` expecting peptide or spectrum functions; import the member (`import peptacular`).
+- The MCP extra is named `server` for psimodpy, unimodpy and uniprotptmpy, `mcp` for the others; tacular, fastatacular, pefftacular and spxtacular have none. `tacular-omics[mcp]` covers all of them.
+- To use a member newer than the cap, install that member on its own without tacular-omics.
+- Cite the member packages you use, not tacular-omics; DOIs are in the README.

@@ -1,0 +1,43 @@
+{
+  "title": "tacular-omics: Install the tacular-omics proteomics packages together",
+  "description": "tacular-omics is a meta-package that installs the tacular-omics core Python packages for mass-spectrometry proteomics (tacular, psimodpy, unimodpy, uniprotptmpy, fastatacular, pefftacular, mzmlpy, tdfpy, peptacular, paftacular and spxtacular) at a set of released versions tested together, each pinned with a floor and a major-version cap. It has no functionality of its own beyond reporting the installed member versions. It requires Python 3.12 or later.",
+  "creators": [
+    {
+      "name": "Garrett, Patrick T.",
+      "orcid": "0000-0002-8434-9693",
+      "affiliation": "Scripps Research Institute"
+    },
+    {
+      "name": "Yates, John R. III",
+      "orcid": "0000-0001-5267-1672",
+      "affiliation": "Scripps Research Institute"
+    }
+  ],
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "mit",
+  "language": "eng",
+  "keywords": [
+    "Python",
+    "Proteomics",
+    "Mass spectrometry",
+    "Bioinformatics"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/tacular-omics/tacular-omics",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    },
+    {
+      "identifier": "https://pypi.org/project/tacular-omics/",
+      "relation": "isAlternateIdentifier",
+      "scheme": "url"
+    }
+  ],
+  "communities": [
+    {
+      "identifier": "proteomics"
+    }
+  ]
+}
