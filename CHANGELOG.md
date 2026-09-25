@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.0] (2026-09-24)
+
+### Changed
+
+- **Breaking:** raises every member to its new release: tacular 2.0, peptacular 5.0,
+  paftacular 2.0, tdfpy 5.0, mzmlpy 0.10 and spxtacular 0.9 (all with breaking API
+  changes; see each package's changelog), and psimodpy, unimodpy, uniprotptmpy,
+  fastatacular and pefftacular 1.1.
+
 ### Added
 
 - End-to-end tests across the member packages: a FASTA protein through digestion,

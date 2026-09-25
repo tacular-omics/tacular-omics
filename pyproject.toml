@@ -7,17 +7,17 @@ requires-python = ">=3.12"
 # The tested set of released member packages. Each has a floor (the release this set
 # was tested with) and a cap (the next major, or next minor for 0.x packages).
 dependencies = [
-    "tacular>=1.2,<2",
-    "psimodpy>=1.0,<2",
-    "unimodpy>=1.0,<2",
-    "uniprotptmpy>=1.0,<2",
-    "fastatacular>=1.0,<2",
-    "pefftacular>=1.0,<2",
-    "mzmlpy>=0.9.3,<0.10",
-    "tdfpy>=4.1.1,<5",
-    "peptacular>=4.2,<5",
-    "paftacular>=1.4,<2",
-    "spxtacular>=0.8,<0.9",
+    "tacular>=2.0,<3",
+    "psimodpy>=1.1,<2",
+    "unimodpy>=1.1,<2",
+    "uniprotptmpy>=1.1,<2",
+    "fastatacular>=1.1,<2",
+    "pefftacular>=1.1,<2",
+    "mzmlpy>=0.10,<0.11",
+    "tdfpy>=5.0,<6",
+    "peptacular>=5.0,<6",
+    "paftacular>=2.0,<3",
+    "spxtacular>=0.9,<0.10",
 ]
 authors = [
     { name = "Patrick Garrett", email = "pgarrett@scripps.edu" }
@@ -42,22 +42,22 @@ classifiers = [
 [project.optional-dependencies]
 # The MCP servers of every member package that ships one.
 mcp = [
-    "psimodpy[server]>=1.0,<2",
-    "unimodpy[server]>=1.0,<2",
-    "uniprotptmpy[server]>=1.0,<2",
-    "mzmlpy[mcp]>=0.9.3,<0.10",
-    "tdfpy[mcp]>=4.1.1,<5",
-    "peptacular[mcp]>=4.2,<5",
-    "paftacular[mcp]>=1.4,<2",
+    "psimodpy[server]>=1.1,<2",
+    "unimodpy[server]>=1.1,<2",
+    "uniprotptmpy[server]>=1.1,<2",
+    "mzmlpy[mcp]>=0.10,<0.11",
+    "tdfpy[mcp]>=5.0,<6",
+    "peptacular[mcp]>=5.0,<6",
+    "paftacular[mcp]>=2.0,<3",
 ]
 # Every optional feature of every member package.
 all = [
     "tacular-omics[mcp]",
-    "mzmlpy[numpress,rapidgzip,zstd]>=0.9.3,<0.10",
-    "tdfpy[viz]>=4.1.1,<5",
-    "peptacular[interop]>=4.2,<5",
-    "paftacular[all]>=1.4,<2",
-    "spxtacular[all]>=0.8,<0.9",
+    "mzmlpy[numpress,rapidgzip,zstd]>=0.10,<0.11",
+    "tdfpy[viz]>=5.0,<6",
+    "peptacular[interop]>=5.0,<6",
+    "paftacular[all]>=2.0,<3",
+    "spxtacular[all]>=0.9,<0.10",
 ]
 
 [project.scripts]
