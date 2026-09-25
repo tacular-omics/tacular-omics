@@ -10,7 +10,7 @@ abstract: >-
   each pinned with a floor and a major-version cap. It has no functionality of
   its own beyond reporting the installed member versions. It requires Python
   3.12 or later.
-version: "0.1.0"
+version: "0.2.0"
 date-released: "2026-09-24"
 authors:
   - family-names: Garrett

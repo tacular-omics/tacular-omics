@@ -7,7 +7,7 @@ package at a tested set of released versions; import the member packages directl
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as _dist_version
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 #: Member packages in dependency order (distribution name == import name).
 PACKAGES: tuple[str, ...] = (
