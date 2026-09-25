@@ -74,6 +74,18 @@ Changelog = "https://github.com/tacular-omics/tacular-omics/blob/main/CHANGELOG.
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.hatch.build.targets.sdist]
+# Source, tests and paperwork only: no paper, docs, lockfile or repo tooling.
+only-include = [
+    "src/tacular_omics",
+    "tests",
+    "README.md",
+    "CHANGELOG.md",
+    "CITATION.cff",
+    "LICENSE",
+    "pyproject.toml",
+]
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/tacular_omics"]
 
