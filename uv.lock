@@ -863,8 +863,8 @@ name = "httpcore2"
 version = "2.13.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "h11", marker = "sys_platform != 'emscripten'" },
-    { name = "truststore", marker = "sys_platform != 'emscripten'" },
+    { name = "h11" },
+    { name = "truststore" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/cb/f3/1db7aa2bc2524062192bb0e0323969492d1883152a232fe36eea65f4e35c/httpcore2-2.13.1.tar.gz", hash = "sha256:e0aa977abe17e69a3b820a24542a6fa88702676d83880b8d194dcd18408e5103", size = 68071, upload-time = "2026-09-23T07:47:22.372Z" }
 wheels = [
@@ -1830,11 +1830,11 @@ wheels = [
 
 [[package]]
 name = "psimodpy"
-version = "1.1.0"
+version = "1.1.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/c5/ab/1f0f2b22bf9d6f1287ed9ace0cb27ce7c0ec18b3729c317b88fa49a86ac8/psimodpy-1.1.0.tar.gz", hash = "sha256:acf6d13041154c432f03429ce96bd88d95ca317d5b845053114401f02d4923f3", size = 395539, upload-time = "2026-09-25T00:42:42.589Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4b/e0/d3b5c054ca9f4a39b0901419b680cde9546d50bacacfffd0927c601d6195/psimodpy-1.1.1.tar.gz", hash = "sha256:c50d39c4ffb6e25a4074eb6469a691dcf5d685cce65aa6124fbcd3d596a72489", size = 307705, upload-time = "2026-09-25T17:23:39.792Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/70/b6/6ff8268dafd674868752662fff82441c3c6c52ff7d0c1d27e6ed5c93720a/psimodpy-1.1.0-py3-none-any.whl", hash = "sha256:6bccf45798f17ae1f5892f15617438af04ff2f8d1276bc5a766798e8ede7fb09", size = 287111, upload-time = "2026-09-25T00:42:41.005Z" },
+    { url = "https://files.pythonhosted.org/packages/21/99/0d7f6ec69b28f7c4765a1ecfae89f7e75b8491ba89302dbe92bd021fe947/psimodpy-1.1.1-py3-none-any.whl", hash = "sha256:3a4e7e4a8be9806250eaab73d6a93d17e9b6cc02a0c9de79e2416b027efe010e", size = 287105, upload-time = "2026-09-25T17:23:38.411Z" },
 ]
 
 [package.optional-dependencies]
@@ -3166,11 +3166,11 @@ wheels = [
 
 [[package]]
 name = "unimodpy"
-version = "1.1.0"
+version = "1.1.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/66/b4/3d3b3ab41dfd58f367c0b2cf8ea42730335dfab7b9d1e19ea0d2559506d0/unimodpy-1.1.0.tar.gz", hash = "sha256:563ec3dfebd310dcb4708ed07a72f6d130e2533187a43d05539228090e376d76", size = 284191, upload-time = "2026-09-25T00:41:57.03Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/04/93/806c5316a0c41d9af6925b2de6c386d17b898c1673fe765b2745b5bc0809/unimodpy-1.1.1.tar.gz", hash = "sha256:19018e5070522dc72a91f473eae5d0f871f67d155e4aa82f8bedcfb18a64a9ef", size = 206959, upload-time = "2026-09-25T17:24:56.765Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/81/8d/3f50b2aaf9d829a112d5dcf5afb93eed7cfe26cc79a2a502b560e5b29041/unimodpy-1.1.0-py3-none-any.whl", hash = "sha256:9ab465f996d87ca71de15f9447539271228f6cda0ea21b7dd80cd5d32983f542", size = 185957, upload-time = "2026-09-25T00:41:55.487Z" },
+    { url = "https://files.pythonhosted.org/packages/69/15/81610e3fb7ebb4169c1fb43ab4b82c372275c7295ce6fe81dee1462d22f5/unimodpy-1.1.1-py3-none-any.whl", hash = "sha256:d51eadd8007937d5fca3457b872ddce18541baffb8421d598ecc8b0513aef97a", size = 185957, upload-time = "2026-09-25T17:24:55.404Z" },
 ]
 
 [package.optional-dependencies]
@@ -3182,11 +3182,11 @@ server = [
 
 [[package]]
 name = "uniprotptmpy"
-version = "1.1.0"
+version = "1.1.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/63/be/ded7c06f6873e38174608ccbef48eafaf0650b0ab154a55b038536739445/uniprotptmpy-1.1.0.tar.gz", hash = "sha256:81d8f36ee280d937825d45162c69b7ad87f688e5b45ab2b54835fd5a9566a8d6", size = 184353, upload-time = "2026-09-25T00:49:03.554Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d4/38/311b5f42474190a2a92c4bda9925afdb5c91fb7edd345094ada9a0f4ddec/uniprotptmpy-1.1.1.tar.gz", hash = "sha256:8a34c094166f7e45416644fae164a0fa13484f0e6b36f2b99622503a389d95b5", size = 100469, upload-time = "2026-09-25T17:26:09.437Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/be/5f/5d84203ccf90f07a1ae3c8a8307cd51f58c82373ab01217112bb6e37e922/uniprotptmpy-1.1.0-py3-none-any.whl", hash = "sha256:eab499d74064584186b2482145138d7180d27a0aa59835452597c7d255924c63", size = 83953, upload-time = "2026-09-25T00:49:02.118Z" },
+    { url = "https://files.pythonhosted.org/packages/2d/d2/c5565440e3eb73c8188a47831cd12d0d89591be4381698ebdb970e11ede1/uniprotptmpy-1.1.1-py3-none-any.whl", hash = "sha256:e78c57df42f03717a26dda1a20debcc9448393faa56ac2bc56ee988b4a080989", size = 83953, upload-time = "2026-09-25T17:26:07.89Z" },
 ]
 
 [package.optional-dependencies]
