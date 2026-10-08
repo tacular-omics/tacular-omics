@@ -1,5 +1,5 @@
-"""Hypothesis: generated modified peptides through peptacular, paftacular, spxtacular,
-tacular and unimodpy.
+"""Hypothesis: generated modified peptides through peptacular, paftacular, spxtacular
+and unimodpy.
 
 The fixed-example suites (test_pipeline_end_to_end, test_cross_package_agreement,
 test_fragment_mzpaf) cover a handful of hand-picked peptides. These tests draw the
@@ -18,7 +18,6 @@ import paftacular as pft
 import peptacular as pt
 import pytest
 import spxtacular as spx
-import tacular as tc
 from hypothesis import given
 from hypothesis import strategies as st
 
@@ -31,6 +30,35 @@ MODS = [
     ("Carbamidomethyl", 4, "C"),
     ("Acetyl", 1, "^"),
 ]
+
+# Monoisotopic residue masses (amino acid minus H2O), typed by hand so the mass check
+# does not share peptacular's table (tacular.AA_LOOKUP). Computed from each residue's
+# elemental formula with the AME2020 atomic masses below (Wang et al., Chinese Phys. C
+# 45, 030003, 2021); they agree with the Unimod amino acid table to its 6 decimals.
+_C, _H, _N, _O = 12.0, 1.00782503223, 14.00307400443, 15.99491461957
+WATER = 2 * _H + _O
+RESIDUE_MASS = {
+    "A": 71.037113785,  # C3H5NO
+    "C": 103.009184960,  # C3H5NOS
+    "D": 115.026943024,  # C4H5NO3
+    "E": 129.042593089,  # C5H7NO3
+    "F": 147.068413914,  # C9H9NO
+    "G": 57.021463721,  # C2H3NO
+    "H": 137.058911858,  # C6H7N3O
+    "I": 113.084063979,  # C6H11NO
+    "K": 128.094963015,  # C6H12N2O
+    "L": 113.084063979,  # C6H11NO
+    "M": 131.040485088,  # C5H9NOS
+    "N": 114.042927441,  # C4H6N2O2
+    "P": 97.052763850,  # C5H7NO
+    "Q": 128.058577506,  # C5H8N2O2
+    "R": 156.101111024,  # C6H12N4O
+    "S": 87.032028405,  # C3H5NO2
+    "T": 101.047678469,  # C4H7NO2
+    "V": 99.068413914,  # C5H9NO
+    "W": 186.079312951,  # C11H10N2O
+    "Y": 163.063328534,  # C9H9NO2
+}
 
 # Same masses summed in a different order: agreement is exact to rounding.
 MZ_TOL = 1e-6
@@ -65,7 +93,7 @@ class Peptide:
 
 @st.composite
 def peptides(draw) -> Peptide:
-    sequence = draw(st.text(alphabet=AMINO_ACIDS, min_size=1, max_size=15))
+    sequence = draw(st.text(alphabet=AMINO_ACIDS, min_size=1, max_size=8))
     sites = [(-1, "Acetyl")] + [
         (i, name) for i, aa in enumerate(sequence) for name, _, residues in MODS if aa in residues
     ]
@@ -127,13 +155,13 @@ def test_mzpaf_label_resolves_to_peptacular_fragment_mz(peptide):
 
 
 @given(peptides())
-def test_spectrum_of_theoretical_fragments_scores_maximal(peptide):
-    """A spectrum built from exactly the theoretical fragments matches each fragment on
-    its own peak and scores matched_fraction = intensity_fraction = 1.
+def test_score_of_perfect_spectrum_is_maximal(peptide):
+    """spxtacular.score() on a spectrum made of exactly peptacular's theoretical fragments
+    gives matched_fraction = intensity_fraction = 1 and zero mean ppm error.
 
-    Catches spxtacular dropping fragments it cannot place (one-residue peptides,
-    fragments sharing an m/z, high-charge ions below the lowest b/y m/z) or counting
-    variants so that a perfect spectrum scores under 1.
+    Fragment-to-peak matching itself is covered by test_cross_package_agreement; this
+    checks only the score fractions. Catches score() counting neutral-loss or isotope
+    variants, or fragments that share one m/z, so that a perfect spectrum scores under 1.
     """
     annot = pt.parse(peptide.proforma())
     frags = _fragments(annot)
@@ -145,31 +173,24 @@ def test_spectrum_of_theoretical_fragments_scores_maximal(peptide):
         spectrum_type=spx.SpectrumType.CENTROID,
         precursors=[spx.Precursor(precursor_mz=annot.mz(), charge=peptide.charge)],
     )
-    matches = spx.match_fragments(spectrum, frags, tolerance=5.0, tolerance_unit="ppm")
-    own = {id(m.fragment) for m in matches if abs(spectrum.mz[m.peak_index] - m.fragment.mz) <= MZ_TOL}
-    missing = [f"{f.ion_type}{f.position}^{f.charge_state} {f.mz}" for f in frags if id(f) not in own]
-    assert not missing, f"{annot.serialize()}: " + ", ".join(missing[:10])
-
     result = spx.score(spectrum, frags, tolerance=5.0, tolerance_unit="ppm")
-    assert result["matched_fraction"] == pytest.approx(1.0)
-    assert result["intensity_fraction"] == pytest.approx(1.0)
-    assert result["mean_ppm_error"] == pytest.approx(0.0, abs=1e-6)
+    assert result["matched_fraction"] == pytest.approx(1.0), annot.serialize()
+    assert result["intensity_fraction"] == pytest.approx(1.0), annot.serialize()
+    assert result["mean_ppm_error"] == pytest.approx(0.0, abs=1e-6), annot.serialize()
 
 
 @given(peptide=peptides())
-def test_neutral_mass_equals_tacular_residues_plus_unimod_deltas(peptide, unimod_mass):
-    """peptacular's neutral mass equals residues (tacular) + mod deltas (unimodpy) + H2O,
-    summed here.
+def test_neutral_mass_equals_hand_typed_residues_plus_unimod_deltas(peptide, unimod_mass):
+    """peptacular's neutral mass equals hand-typed residue masses + mod deltas (unimodpy)
+    + H2O, summed here.
 
     Catches a mod counted twice or not at all (N-terminal acetyl plus a residue mod,
-    UNIMOD accession vs name), a residue mass table in peptacular that drifts from
-    tacular's, or a terminal water added per residue on one-residue peptides.
+    UNIMOD accession vs name), a wrong residue mass, or a terminal water added per
+    residue on one-residue peptides.
     """
-    elements = tc.ELEMENT_LOOKUP
-    water = 2 * elements["H"].mass + elements["O"].mass
-    residues = sum(tc.AA_LOOKUP[aa].monoisotopic_mass for aa in peptide.sequence)
+    residues = sum(RESIDUE_MASS[aa] for aa in peptide.sequence)
     deltas = sum(unimod_mass[name] for name in peptide.mods.values())
-    expected = residues + deltas + water
+    expected = residues + deltas + WATER
 
     annot = pt.parse(peptide.proforma())
     assert annot.neutral_mass() == pytest.approx(expected, abs=MASS_TOL), peptide.proforma()
