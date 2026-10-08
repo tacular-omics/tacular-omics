@@ -5,6 +5,9 @@ In the tacular-omics workspace these tests run against the local sibling checkou
 installed releases. A few tests read example data from sibling checkouts
 (``PACKAGES``) and skip when it is absent. No test writes outside pytest's
 ``tmp_path``.
+
+Hypothesis profiles: ``default`` runs 30 examples per property test; set
+``HYPOTHESIS_PROFILE=ci`` or ``thorough`` for 300.
 """
 
 from __future__ import annotations
@@ -20,6 +23,7 @@ import numpy as np
 import psimodpy
 import pytest
 import unimodpy
+from hypothesis import HealthCheck, settings
 
 # Sibling checkouts: set TACULAR_OMICS_PACKAGES, else the workspace layout
 # (<workspace>/packages/tacular-omics/tests/conftest.py).
@@ -28,6 +32,12 @@ PACKAGES = Path(os.environ.get("TACULAR_OMICS_PACKAGES") or Path(__file__).resol
 # A heavy base peptide so that large negative mod deltas never push the total mass
 # below zero (peptacular rejects negative masses).
 HEAVY_BASE = "W" * 20 + "K"
+
+_HYPOTHESIS_COMMON = {"deadline": None, "suppress_health_check": [HealthCheck.too_slow]}
+settings.register_profile("default", max_examples=30, **_HYPOTHESIS_COMMON)
+settings.register_profile("ci", max_examples=300, **_HYPOTHESIS_COMMON)
+settings.register_profile("thorough", max_examples=300, **_HYPOTHESIS_COMMON)
+settings.load_profile(os.environ.get("HYPOTHESIS_PROFILE", "default"))
 
 
 @pytest.fixture(scope="session")
