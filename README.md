@@ -53,7 +53,7 @@ tacular_omics.versions()   # {"tacular": "1.2.0", "psimodpy": "1.0.0", ...}
 
 Each `tacular-omics` release pins the member packages to the set that was released
 and tested together: every requirement has a floor (the tested release) and a cap (the
-next major version, or the next minor for 0.x packages such as `mzmlpy>=0.9.3,<0.10`).
+next major version, or the next minor for 0.x packages such as `mzmlpy>=0.10.1,<0.11`).
 You get bug-fix and feature releases of each member automatically, but never a breaking
 release that has not been tested with the others. When the members release a new
 batch, a new `tacular-omics` version raises the pins. The exact pins are in

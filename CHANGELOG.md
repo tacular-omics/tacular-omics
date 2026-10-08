@@ -4,8 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.1] (2026-10-08)
+
 ### Changed
 
+- Raises every member floor to its 2026-10-08 release (caps unchanged): tacular 2.0.1,
+  psimodpy 1.1.2, unimodpy 1.1.2, fastatacular 1.2.0, pefftacular 1.2.0, mzmlpy 0.10.1,
+  tdfpy 5.0.1, peptacular 5.0.1, paftacular 2.0.1 and spxtacular 0.9.2; uniprotptmpy
+  stays at 1.1.1 (floor raised to it). The cross-package agreement tests need these
+  releases.
 - The source distribution now contains only the source, tests and the README, changelog, citation and license files: no paper, docs, lockfile or repository tooling.
 
 ## [0.2.0] (2026-09-24)
