@@ -121,6 +121,10 @@ VARIANTS = {
 PEPTIDE_IDS = list(PEPTIDES)
 CARRIER_IDS = list(CARRIERS)
 
+# mzPAF has no notation for a hydride (H-) carrier: [M+H] is H+, and paftacular rejects a
+# charge that disagrees with its carriers (mzPAF 4.7). These carriers skip the mzPAF checks.
+NO_MZPAF = {"hydride-": "mzPAF cannot express a hydride (H-) carrier"}
+
 # Fragment grid: plain ions for every peptide; the loss/isotope variant on the modified
 # peptide only (it has the phospho loss and keeps the default run under ~20 s).
 FRAGMENT_CASES = [
@@ -187,10 +191,11 @@ def test_precursor_mz_matches_hand_computed_constants(carrier_id):
     assert pt.mz(ANCHOR_PEPTIDE, charge=charge) == pytest.approx(literal, abs=MZ_TOL), "peptacular"
 
     (frag,) = pt.fragment(ANCHOR_PEPTIDE, ion_types=["p"], charges=[charge])
-    ann = pft.parse(pft.to_mzpaf(frag).serialize()).resolve(ANCHOR_PEPTIDE)
     assert frag.charge_state == signed
-    assert ann.charge == signed
-    assert ann.mz() == pytest.approx(literal, abs=MZ_TOL), f"paftacular {ann.serialize()}"
+    if carrier_id not in NO_MZPAF:
+        ann = pft.parse(pft.to_mzpaf(frag).serialize()).resolve(ANCHOR_PEPTIDE)
+        assert ann.charge == signed
+        assert ann.mz() == pytest.approx(literal, abs=MZ_TOL), f"paftacular {ann.serialize()}"
 
     model = spx.resolve_ionization_model(model_name)
     assert model.polarity == ("positive" if signed > 0 else "negative")
@@ -204,6 +209,8 @@ def test_precursor_mz_matches_hand_computed_constants(carrier_id):
 
 @pytest.mark.parametrize(("variant", "peptide_id", "carrier_id"), FRAGMENT_CASES)
 def test_fragment_mz_survives_mzpaf_round_trip(variant, peptide_id, carrier_id):
+    if carrier_id in NO_MZPAF:
+        pytest.skip(NO_MZPAF[carrier_id])
     peptide, carrier = PEPTIDES[peptide_id], CARRIERS[carrier_id]
     failures = []
     for f in _fragments(peptide, carrier, **VARIANTS[variant]):
@@ -385,6 +392,8 @@ def test_match_fragments_dict_input_keeps_sign(peptide_id, carrier_id, decharged
 @pytest.mark.parametrize("carrier_id", CARRIER_IDS)
 @pytest.mark.parametrize("peptide_id", PEPTIDE_IDS)
 def test_precursor_mz_peptacular_vs_paftacular(peptide_id, carrier_id):
+    if carrier_id in NO_MZPAF:
+        pytest.skip(NO_MZPAF[carrier_id])
     peptide, carrier = PEPTIDES[peptide_id], CARRIERS[carrier_id]
     expected = pt.mz(peptide, charge=carrier.charge)
     (frag,) = pt.fragment(peptide, ion_types=["p"], charges=[carrier.charge])
