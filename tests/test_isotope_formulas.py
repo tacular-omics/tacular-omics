@@ -115,25 +115,25 @@ def _psimod_isotope_entries(psimod_db):
         for e in psimod_db
         if not e.is_obsolete
         and e.diff_mono is not None
-        and e.dict_diff_formula
-        and any(k[:1].isdigit() for k in e.dict_diff_formula)
+        and e.dict_composition
+        and any(k[:1].isdigit() for k in e.dict_composition)
     ]
 
 
-def test_psimodpy_proforma_diff_formula_isotopes(psimod_db):
+def test_psimodpy_proforma_formula_isotopes(psimod_db):
     entries = _psimod_isotope_entries(psimod_db)
     assert len(entries) > 100
-    bad = [e.id for e in entries if not _agrees(e.proforma_diff_formula, e.diff_mono)]
+    bad = [e.id for e in entries if not _agrees(e.proforma_formula, e.diff_mono)]
     assert not bad, f"{len(bad)} entries, e.g. {bad[:5]}"
 
 
-def test_psimodpy_dict_diff_formula_isotopes(psimod_db):
+def test_psimodpy_dict_composition_isotopes(psimod_db):
     entries = _psimod_isotope_entries(psimod_db)
-    bad = [e.id for e in entries if not _agrees(dict(e.dict_diff_formula), e.diff_mono)]
+    bad = [e.id for e in entries if not _agrees(dict(e.dict_composition), e.diff_mono)]
     assert not bad, f"{len(bad)} entries, e.g. {bad[:5]}"
 
 
 def test_psimodpy_and_tacular_agree_on_isotope_formula(psimod_db):
     entry = psimod_db[452]
     info = tc.PSIMOD_LOOKUP[452]
-    assert pt.chem_mass(entry.proforma_diff_formula) == pytest.approx(pt.chem_mass(info.formula), abs=MASS_TOL)
+    assert pt.chem_mass(entry.proforma_formula) == pytest.approx(pt.chem_mass(info.formula), abs=MASS_TOL)
