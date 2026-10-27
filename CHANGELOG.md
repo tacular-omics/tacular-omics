@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.2] (2026-10-26)
+
+### Changed
+
+- The isotope integration tests use psimodpy's current formula API.
+- Updated development and test dependencies.
+
 ## [0.2.1] (2026-10-08)
 
 ### Changed
