@@ -58,7 +58,9 @@ jobs:
         with:
           python-version: "3.12"
       - run: uv sync --resolution lowest-direct --all-groups
-      - run: uv run pytest tests
+      # --no-sync is required: a plain `uv run` re-resolves to the default (highest)
+      # versions and silently undoes the lowest-direct sync above.
+      - run: uv run --no-sync pytest tests
 
   # Build the wheel, install it into a fresh environment from PyPI (no lock file,
   # newest versions inside the caps) and import every member.
