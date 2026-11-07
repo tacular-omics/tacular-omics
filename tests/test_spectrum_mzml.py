@@ -4,7 +4,6 @@ read back through mzmlpy and spxtacular, gives the same peaks."""
 
 from __future__ import annotations
 
-import importlib
 import shutil
 import warnings
 
@@ -14,7 +13,7 @@ import paftacular as pft
 import peptacular as pt
 import pytest
 import spxtacular as spx
-from conftest import PACKAGES, SyntheticScan, assert_fix_is_in_every_later_release, write_indexed_mzml, write_mzml
+from conftest import PACKAGES, SyntheticScan, write_indexed_mzml, write_mzml
 
 PEPTIDE = "PEPT[Phospho]IDEM[Oxidation]K/2"
 TOL_PPM = 5.0
@@ -210,25 +209,6 @@ def test_mzmlpy_validates_its_own_example(tmp_path):
 INDEXED_SCANS = 5
 INDEX_ENTRIES = 3
 
-# The fix is unreleased: both the local checkout and PyPI call themselves mzmlpy 0.10.2, so a
-# version floor cannot tell them apart and would be dead on both sides. The gate therefore
-# probes for the implementation while the tests below assert the behaviour - a fix that kept
-# the name and broke the behaviour still fails them. Delete this gate when the pin floor in
-# pyproject.toml reaches the release that carries #56.
-_HAS_DOCUMENT_AUTHORITY = hasattr(
-    importlib.import_module("mzmlpy.file_classes.standardMzml").AbstractRandomAccessMzml,
-    "_check_trailing_records",
-)
-needs_document_authority = pytest.mark.skipif(
-    not _HAS_DOCUMENT_AUTHORITY,
-    reason="mzmlpy #56 (the document is the authority, the offset index a cache) is not in this mzmlpy",
-)
-
-
-def test_the_document_authority_gate_comes_off_when_the_fix_ships():
-    """0.10.2 was the last mzmlpy without #56; anything later must have it."""
-    assert_fix_is_in_every_later_release("mzmlpy", "0.10.2", _HAS_DOCUMENT_AUTHORITY)
-
 
 def _codes(path):
     """``mzmlpy.validate`` issue codes, sorted: the order is not part of the contract."""
@@ -273,7 +253,6 @@ def _answers(path):
             }
 
 
-@needs_document_authority
 def test_a_short_offset_index_changes_no_answer(indexed_pair):
     """``len``, ``ids``, ``in``, iteration, id lookup and position lookup must all agree.
 
@@ -295,7 +274,6 @@ def test_a_short_offset_index_changes_no_answer(indexed_pair):
     assert answers["by_position_mz"] == scans[-1].mz.tolist()
 
 
-@needs_document_authority
 def test_a_short_offset_index_is_reported_not_silently_repaired(indexed_pair):
     """Rebuilding from the document is the right answer; doing it quietly is not.
 
@@ -309,7 +287,6 @@ def test_a_short_offset_index_is_reported_not_silently_repaired(indexed_pair):
     assert _codes(counted) == ["index_ids_mismatch"]
 
 
-@needs_document_authority
 def test_spxtacular_reads_past_a_short_offset_index(indexed_pair):
     scans, _, short, _ = indexed_pair
     expected = [scan for scan in scans if scan.ms_level == 2]

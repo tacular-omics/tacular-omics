@@ -3,12 +3,9 @@
 
 from __future__ import annotations
 
-import importlib
-
 import paftacular as pft
 import peptacular as pt
 import pytest
-from conftest import assert_fix_is_in_every_later_release
 
 # Da tolerance for m/z agreement. peptacular's fragment masses use the CV's listed mod
 # mass while paftacular recomputes from composition, which differ by up to ~5e-7 Da.
@@ -96,26 +93,6 @@ def test_mzpaf_multi_annotation_roundtrip():
 # unlocalized modification is assigned to no residue and no fragment can claim it.
 # --------------------------------------------------------------------------------------
 
-# The fix is unreleased: both the local checkout and PyPI call themselves paftacular 2.0.2,
-# so a version floor cannot tell them apart and would be dead on both sides. The gate probes
-# for the implementation while the test asserts the behaviour - a fix that kept the name and
-# stopped warning, or stopped dropping the modification, still fails. Measured: PyPI 2.0.2
-# has no _drop_unassignable_mods and emits no warning, so every m/z below comes back high by
-# the full modification mass. Delete this gate when the pin floor in pyproject.toml reaches
-# the release that carries #57.
-needs_unassignable_mod_drop = pytest.mark.skipif(
-    not hasattr(importlib.import_module("paftacular.resolution"), "_drop_unassignable_mods"),
-    reason="paftacular #57 (a fragment must not claim the analyte's unlocalized modification) is not in this build",
-)
-
-
-def test_the_unassignable_mod_gate_comes_off_when_the_fix_ships():
-    """2.0.2 was the last paftacular without #57; anything later must have it."""
-    assert_fix_is_in_every_later_release(
-        "paftacular", "2.0.2", hasattr(importlib.import_module("paftacular.resolution"), "_drop_unassignable_mods")
-    )
-
-
 UNLOCALIZED_ANALYTE = "[Phospho]?PEPTIDE"
 BARE_SEQUENCE = "PEPTIDE"
 
@@ -149,7 +126,6 @@ def test_peptacular_will_not_fragment_an_unlocalized_modification():
         list(pt.parse(UNLOCALIZED_ANALYTE).fragment(**FRAGMENT_KW))
 
 
-@needs_unassignable_mod_drop
 @pytest.mark.parametrize("label", ["b2", "y2", "b2^2", "y3"])
 def test_a_fragment_does_not_claim_an_unlocalized_modification(label):
     """The resolved m/z is the bare slice's, and the warning says why.

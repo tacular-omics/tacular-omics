@@ -14,7 +14,6 @@ from __future__ import annotations
 
 import base64
 import hashlib
-import importlib.metadata as metadata
 import os
 import zlib
 from collections.abc import Sequence
@@ -213,23 +212,3 @@ def write_indexed_mzml(
     path.write_bytes(prefix + tail + f"<fileChecksum>{checksum}</fileChecksum></indexedmzML>\n".encode())
     plain.unlink()
     return path
-
-
-def assert_fix_is_in_every_later_release(package: str, last_release_without_fix: str, present: bool) -> None:
-    """Fail if a release later than ``last_release_without_fix`` still lacks the fix.
-
-    A test gated on the presence of an unreleased fix skips wherever the fix is absent,
-    which is honest while the fix is unreleased and silent for ever if the release that
-    carries it is never noticed. This is the tripwire: the moment the installed version is
-    past the last one without the fix, the fix must be there, and the gate must come off.
-    It is why the skip above cannot become permanent on its own.
-    """
-    installed = metadata.version(package)
-    as_ints = tuple(int(part) for part in installed.split(".")[:3] if part.isdigit())
-    if as_ints <= tuple(int(part) for part in last_release_without_fix.split(".")):
-        return
-    assert present, (
-        f"{package} {installed} is later than {last_release_without_fix}, which was the last "
-        f"release without the fix, yet the fix is not present. Either the release dropped it, "
-        f"or the probe this gate uses has been renamed - do not delete the gate, fix the cause."
-    )
