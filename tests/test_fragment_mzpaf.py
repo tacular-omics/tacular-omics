@@ -3,9 +3,12 @@
 
 from __future__ import annotations
 
+import importlib
+
 import paftacular as pft
 import peptacular as pt
 import pytest
+from conftest import assert_fix_is_in_every_later_release
 
 # Da tolerance for m/z agreement. peptacular's fragment masses use the CV's listed mod
 # mass while paftacular recomputes from composition, which differ by up to ~5e-7 Da.
@@ -83,3 +86,87 @@ def test_mzpaf_multi_annotation_roundtrip():
     assert len(parsed) == len(frags)
     for ann, frag in zip(parsed, frags, strict=True):
         assert ann.mz() == pytest.approx(frag.mz, abs=MZ_TOL)
+
+
+# --------------------------------------------------------------------------------------
+# An unlocalized modification. peptacular refuses to fragment such an analyte at all, so
+# it is deliberately absent from PEPTIDES above and the two packages cannot be compared
+# fragment for fragment here. What can be compared: the mass paftacular resolves must be
+# the one peptacular gives for the same slice with the modification removed, because an
+# unlocalized modification is assigned to no residue and no fragment can claim it.
+# --------------------------------------------------------------------------------------
+
+# The fix is unreleased: both the local checkout and PyPI call themselves paftacular 2.0.2,
+# so a version floor cannot tell them apart and would be dead on both sides. The gate probes
+# for the implementation while the test asserts the behaviour - a fix that kept the name and
+# stopped warning, or stopped dropping the modification, still fails. Measured: PyPI 2.0.2
+# has no _drop_unassignable_mods and emits no warning, so every m/z below comes back high by
+# the full modification mass. Delete this gate when the pin floor in pyproject.toml reaches
+# the release that carries #57.
+needs_unassignable_mod_drop = pytest.mark.skipif(
+    not hasattr(importlib.import_module("paftacular.resolution"), "_drop_unassignable_mods"),
+    reason="paftacular #57 (a fragment must not claim the analyte's unlocalized modification) is not in this build",
+)
+
+
+def test_the_unassignable_mod_gate_comes_off_when_the_fix_ships():
+    """2.0.2 was the last paftacular without #57; anything later must have it."""
+    assert_fix_is_in_every_later_release(
+        "paftacular", "2.0.2", hasattr(importlib.import_module("paftacular.resolution"), "_drop_unassignable_mods")
+    )
+
+
+UNLOCALIZED_ANALYTE = "[Phospho]?PEPTIDE"
+BARE_SEQUENCE = "PEPTIDE"
+
+
+def _peptacular_mz(label: str) -> float:
+    """The m/z peptacular gives for the ion `label` names, on the bare sequence.
+
+    Matched on the parsed mzPAF fields rather than the label text, because peptacular
+    writes the embedded sequence into its own labels (``b2{PE}``) and there is no one
+    spelling to compare against.
+    """
+    wanted = pft.parse(label)
+    hits = []
+    for frag in pt.parse(BARE_SEQUENCE).fragment(ion_types=["b", "y"], charges=[1, 2]):
+        got = pft.parse(frag.to_mzpaf())
+        # ion_type is a PeptideIon; peptacular embeds the slice sequence in it and the
+        # bare label does not, so compare the series and position rather than the whole.
+        if (got.ion_type.series, got.ion_type.position, got.charge) == (
+            wanted.ion_type.series,
+            wanted.ion_type.position,
+            wanted.charge,
+        ):
+            hits.append(frag.mz)
+    assert len(hits) == 1, f"{label} matched {len(hits)} peptacular fragments"
+    return hits[0]
+
+
+def test_peptacular_will_not_fragment_an_unlocalized_modification():
+    """Why this analyte is not in PEPTIDES: peptacular declines, rather than guessing."""
+    with pytest.raises(pt.PeptacularError, match="unknown modifications"):
+        list(pt.parse(UNLOCALIZED_ANALYTE).fragment(**FRAGMENT_KW))
+
+
+@needs_unassignable_mod_drop
+@pytest.mark.parametrize("label", ["b2", "y2", "b2^2", "y3"])
+def test_a_fragment_does_not_claim_an_unlocalized_modification(label):
+    """The resolved m/z is the bare slice's, and the warning says why.
+
+    Carrying the analyte's unlocalized modification into every slice is right for a
+    sequence slice and wrong for a fragment: it adds the whole modification mass to every
+    ion and publishes one theoretical m/z as if the position were known.
+    """
+    with pytest.warns(UserWarning, match="unlocalized modification"):
+        resolved = pft.parse(label).resolve(UNLOCALIZED_ANALYTE)
+
+    expected = _peptacular_mz(label)
+    assert resolved.mz() == pytest.approx(expected, abs=MZ_TOL)
+
+    # and it is not the value that claiming the modification would give
+    charge = pft.parse(label).charge
+    phospho = pt.parse("PEPT[Phospho]IDE").mass() - pt.parse(BARE_SEQUENCE).mass()
+    assert phospho > 79.0
+    claimed = expected + phospho / charge
+    assert abs(resolved.mz() - claimed) > phospho / charge / 2

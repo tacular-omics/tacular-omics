@@ -13,6 +13,8 @@ Hypothesis profiles: ``default`` runs 30 examples per property test; set
 from __future__ import annotations
 
 import base64
+import hashlib
+import importlib.metadata as metadata
 import os
 import zlib
 from collections.abc import Sequence
@@ -152,3 +154,82 @@ def write_mzml(path: Path, scans: Sequence[SyntheticScan], compress: bool = True
     )
     path.write_text(xml, encoding="utf-8")
     return path
+
+
+def write_indexed_mzml(
+    path: Path,
+    scans: Sequence[SyntheticScan],
+    compress: bool = True,
+    index_entries: int | None = None,
+    declared_count: int | None = None,
+) -> Path:
+    """An ``indexedmzML`` wrapping :func:`write_mzml`, with a real byte offset index.
+
+    ``index_entries`` writes an index that names only the first *n* spectra while the
+    document itself still holds all of them, and ``declared_count`` overrides
+    ``spectrumList@count``. Both are needed together to build the file shape that a reader
+    can get wrong: the shape a writer that stopped early produces, where the index, its own
+    ``indexList`` and ``spectrumList@count`` all agree on the short number and only the
+    document disagrees. **Leaving ``spectrumList@count`` at the true number is not that
+    shape** - the count cross-check catches it and rebuilds, so every answer is right for a
+    reason that has nothing to do with the index. The document is the authority and the
+    index is a cache of it, so a short index must not shorten ``len``, ``ids``, ``in``,
+    slicing or ``__getitem__``.
+    """
+    plain = write_mzml(path.with_suffix(".plain.mzML"), scans, compress=compress)
+    body = plain.read_text(encoding="utf-8")
+    body = body[body.index("<mzML") :].rstrip("\n")
+    if declared_count is not None:
+        true_count = f'<spectrumList count="{len(scans)}"'
+        if true_count not in body:  # pragma: no cover - the writer above just wrote it
+            raise AssertionError(f"cannot set spectrumList@count: {true_count!r} not in the document")
+        body = body.replace(true_count, f'<spectrumList count="{declared_count}"', 1)
+
+    head = (
+        '<?xml version="1.0" encoding="utf-8"?>\n'
+        '<indexedmzML xmlns="http://psi.hupo.org/ms/mzml" '
+        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
+    )
+    prefix = (head + body).encode("utf-8")
+
+    offsets = []
+    cursor = 0
+    for index in range(len(scans)):
+        needle = f'<spectrum index="{index}" '.encode()
+        cursor = prefix.index(needle, cursor)
+        offsets.append((f"scan={index + 1}", cursor))
+        cursor += 1
+
+    named = offsets if index_entries is None else offsets[:index_entries]
+    index_xml = (
+        '<indexList count="1">'
+        f'<index name="spectrum">{"".join(f'<offset idRef="{ref}">{at}</offset>' for ref, at in named)}</index>'
+        "</indexList>"
+    ).encode()
+
+    index_list_offset = len(prefix)
+    tail = index_xml + f"<indexListOffset>{index_list_offset}</indexListOffset>".encode()
+    checksum = hashlib.sha1(prefix + tail + b"<fileChecksum>").hexdigest()  # noqa: S324 - the mzML spec says SHA-1
+    path.write_bytes(prefix + tail + f"<fileChecksum>{checksum}</fileChecksum></indexedmzML>\n".encode())
+    plain.unlink()
+    return path
+
+
+def assert_fix_is_in_every_later_release(package: str, last_release_without_fix: str, present: bool) -> None:
+    """Fail if a release later than ``last_release_without_fix`` still lacks the fix.
+
+    A test gated on the presence of an unreleased fix skips wherever the fix is absent,
+    which is honest while the fix is unreleased and silent for ever if the release that
+    carries it is never noticed. This is the tripwire: the moment the installed version is
+    past the last one without the fix, the fix must be there, and the gate must come off.
+    It is why the skip above cannot become permanent on its own.
+    """
+    installed = metadata.version(package)
+    as_ints = tuple(int(part) for part in installed.split(".")[:3] if part.isdigit())
+    if as_ints <= tuple(int(part) for part in last_release_without_fix.split(".")):
+        return
+    assert present, (
+        f"{package} {installed} is later than {last_release_without_fix}, which was the last "
+        f"release without the fix, yet the fix is not present. Either the release dropped it, "
+        f"or the probe this gate uses has been renamed - do not delete the gate, fix the cause."
+    )

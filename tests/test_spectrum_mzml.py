@@ -4,6 +4,7 @@ read back through mzmlpy and spxtacular, gives the same peaks."""
 
 from __future__ import annotations
 
+import importlib
 import shutil
 import warnings
 
@@ -13,7 +14,7 @@ import paftacular as pft
 import peptacular as pt
 import pytest
 import spxtacular as spx
-from conftest import PACKAGES, SyntheticScan, write_mzml
+from conftest import PACKAGES, SyntheticScan, assert_fix_is_in_every_later_release, write_indexed_mzml, write_mzml
 
 PEPTIDE = "PEPT[Phospho]IDEM[Oxidation]K/2"
 TOL_PPM = 5.0
@@ -187,3 +188,134 @@ def test_mzmlpy_validates_its_own_example(tmp_path):
     shutil.copyfile(source, copy)
     report = mzmlpy.validate(str(copy), decode_binary=True)
     assert report.valid, report.issues
+
+
+# --------------------------------------------------------------------------------------
+# An indexedmzML whose offset index names fewer spectra than the document holds. The
+# document is the authority and the index is a cache of it, so every lookup must answer
+# from the document; and the shortness must be reported rather than silently repaired.
+#
+# Two shapes, and only one of them is hard. `counted` leaves spectrumList@count at the true
+# number, which the count cross-check has always caught: the index is thrown away and every
+# answer is right for a reason that has nothing to do with the fix. `short` is what a writer
+# that stopped early produces - the index, indexList@count and spectrumList@count all agree
+# on the short number, and only the document disagrees - so the count cross-check passes and
+# the index is believed. Measured on the two shapes with mzmlpy 0.10.2 (no fix) and the
+# fixed checkout, which both report version 0.10.2: `counted` gives identical answers on
+# both, while `short` gives len 3, ids 3, iteration 5, `in` False and a raise from both
+# lookups without the fix, against all five and no raise with it. Keeping both shapes is
+# what stops declared_count being quietly dropped again.
+# --------------------------------------------------------------------------------------
+
+INDEXED_SCANS = 5
+INDEX_ENTRIES = 3
+
+# The fix is unreleased: both the local checkout and PyPI call themselves mzmlpy 0.10.2, so a
+# version floor cannot tell them apart and would be dead on both sides. The gate therefore
+# probes for the implementation while the tests below assert the behaviour - a fix that kept
+# the name and broke the behaviour still fails them. Delete this gate when the pin floor in
+# pyproject.toml reaches the release that carries #56.
+_HAS_DOCUMENT_AUTHORITY = hasattr(
+    importlib.import_module("mzmlpy.file_classes.standardMzml").AbstractRandomAccessMzml,
+    "_check_trailing_records",
+)
+needs_document_authority = pytest.mark.skipif(
+    not _HAS_DOCUMENT_AUTHORITY,
+    reason="mzmlpy #56 (the document is the authority, the offset index a cache) is not in this mzmlpy",
+)
+
+
+def test_the_document_authority_gate_comes_off_when_the_fix_ships():
+    """0.10.2 was the last mzmlpy without #56; anything later must have it."""
+    assert_fix_is_in_every_later_release("mzmlpy", "0.10.2", _HAS_DOCUMENT_AUTHORITY)
+
+
+def _codes(path):
+    """``mzmlpy.validate`` issue codes, sorted: the order is not part of the contract."""
+    return sorted(issue.code for issue in mzmlpy.validate(str(path), decode_binary=True).issues)
+
+
+@pytest.fixture
+def indexed_pair(tmp_path):
+    scans = [
+        SyntheticScan(
+            mz=np.array([100.0 + i, 200.0 + i, 300.0 + i]),
+            intensity=np.array([10.0 + i, 20.0 + i, 30.0 + i]),
+            ms_level=1 if i == 0 else 2,
+            rt_seconds=60.0 + i,
+            precursor_mz=None if i == 0 else 500.0 + i,
+            precursor_charge=None if i == 0 else 2,
+        )
+        for i in range(INDEXED_SCANS)
+    ]
+    full = write_indexed_mzml(tmp_path / "full.mzML", scans)
+    short = write_indexed_mzml(
+        tmp_path / "short.mzML", scans, index_entries=INDEX_ENTRIES, declared_count=INDEX_ENTRIES
+    )
+    counted = write_indexed_mzml(tmp_path / "counted.mzML", scans, index_entries=INDEX_ENTRIES)
+    return scans, full, short, counted
+
+
+def _answers(path):
+    """Every way of asking the reader how many spectra there are, and for the last one."""
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)  # the reader warns that it is rebuilding
+        with mzmlpy.Mzml(str(path)) as reader:
+            spectra = reader.spectra
+            last_id = f"scan={INDEXED_SCANS}"
+            return {
+                "len": len(spectra),
+                "ids": len(spectra.ids),
+                "iterated": sum(1 for _ in spectra),
+                "contains_last": last_id in spectra,
+                "by_id_mz": np.asarray(spectra[last_id].mz).tolist(),
+                "by_position_mz": np.asarray(spectra[INDEXED_SCANS - 1].mz).tolist(),
+            }
+
+
+@needs_document_authority
+def test_a_short_offset_index_changes_no_answer(indexed_pair):
+    """``len``, ``ids``, ``in``, iteration, id lookup and position lookup must all agree.
+
+    An index that names three of five spectra was believed by the lookups while iteration
+    streamed the document, so the two halves of the reader answered the same file
+    differently and the spectra past the index were reachable by no key. Asking the same
+    six questions of both files is the check: the only difference between them is the
+    index and the count that agrees with it, so any disagreement is the index being
+    treated as authoritative. Without the fix the last spectrum is reachable by neither
+    id nor position - both raise - which is the silent data loss stated as an exception.
+    """
+    scans, full, short, _ = indexed_pair
+    assert _answers(short) == _answers(full)
+
+    answers = _answers(short)
+    assert answers["len"] == INDEXED_SCANS
+    assert answers["len"] > INDEX_ENTRIES  # the file is genuinely short-indexed
+    assert answers["by_id_mz"] == scans[-1].mz.tolist()
+    assert answers["by_position_mz"] == scans[-1].mz.tolist()
+
+
+@needs_document_authority
+def test_a_short_offset_index_is_reported_not_silently_repaired(indexed_pair):
+    """Rebuilding from the document is the right answer; doing it quietly is not.
+
+    The repair is what makes the lookups correct, which means no count and no peak
+    comparison can detect that the file was malformed - this is the only assertion in the
+    pair that can.
+    """
+    _, full, short, counted = indexed_pair
+    assert _codes(full) == []
+    assert _codes(short) == ["count_mismatch", "index_ids_mismatch"]
+    assert _codes(counted) == ["index_ids_mismatch"]
+
+
+@needs_document_authority
+def test_spxtacular_reads_past_a_short_offset_index(indexed_pair):
+    scans, _, short, _ = indexed_pair
+    expected = [scan for scan in scans if scan.ms_level == 2]
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)
+        with spx.MzmlReader(short) as reader:
+            read = list(reader.ms2)
+    assert len(read) == len(expected)
+    np.testing.assert_array_equal(read[-1].mz, expected[-1].mz)
