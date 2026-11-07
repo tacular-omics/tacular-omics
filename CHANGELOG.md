@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.2.3] (2026-11-07)
+
+### Changed
+
+- Raises every member floor to its 2026-11-07 release (caps unchanged): tacular 2.1.0,
+  psimodpy 1.2.0, unimodpy 1.2.0, uniprotptmpy 1.2.0, fastatacular 1.4.1, pefftacular
+  1.2.2, mzmlpy 0.10.3, tdfpy 5.1.0, peptacular 5.1.0, paftacular 2.1.0 and spxtacular
+  0.9.4. The cross-package tests need these releases.
+
+### Removed
+
+- The two gates that guarded the paftacular unassignable-modification and mzmlpy
+  index-offset cross-checks. Each existed only because the fix it probed for was
+  unreleased, so the local checkout and PyPI both called themselves the same version and
+  no floor could tell them apart; with paftacular 2.1.0 and mzmlpy 0.10.3 released, the
+  raised floors do that work. The four tests they gated now run instead of skipping; the
+  mzML fixtures and every asserted number are unchanged.
+
 ## [0.2.2] (2026-10-26)
 
 ### Changed
