@@ -13,6 +13,7 @@ Hypothesis profiles: ``default`` runs 30 examples per property test; set
 from __future__ import annotations
 
 import base64
+import hashlib
 import os
 import zlib
 from collections.abc import Sequence
@@ -151,4 +152,53 @@ def write_mzml(path: Path, scans: Sequence[SyntheticScan], compress: bool = True
         "</run></mzML>\n"
     )
     path.write_text(xml, encoding="utf-8")
+    return path
+
+
+def write_indexed_mzml(
+    path: Path,
+    scans: Sequence[SyntheticScan],
+    compress: bool = True,
+    index_entries: int | None = None,
+) -> Path:
+    """An ``indexedmzML`` wrapping :func:`write_mzml`, with a real byte offset index.
+
+    ``index_entries`` writes an index that names only the first *n* spectra while
+    ``spectrumList@count`` and the document itself still hold all of them. That is the
+    file shape where a reader can disagree with itself: the document is the authority and
+    the index is a cache of it, so a short index must not shorten ``len``, ``ids``, ``in``,
+    slicing or ``__getitem__``. ``indexList@count`` deliberately matches the number of
+    offsets written, so the file is internally consistent and only short.
+    """
+    plain = write_mzml(path.with_suffix(".plain.mzML"), scans, compress=compress)
+    body = plain.read_text(encoding="utf-8")
+    body = body[body.index("<mzML") :].rstrip("\n")
+
+    head = (
+        '<?xml version="1.0" encoding="utf-8"?>\n'
+        '<indexedmzML xmlns="http://psi.hupo.org/ms/mzml" '
+        'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'
+    )
+    prefix = (head + body).encode("utf-8")
+
+    offsets = []
+    cursor = 0
+    for index in range(len(scans)):
+        needle = f'<spectrum index="{index}" '.encode()
+        cursor = prefix.index(needle, cursor)
+        offsets.append((f"scan={index + 1}", cursor))
+        cursor += 1
+
+    named = offsets if index_entries is None else offsets[:index_entries]
+    index_xml = (
+        '<indexList count="1">'
+        f'<index name="spectrum">{"".join(f'<offset idRef="{ref}">{at}</offset>' for ref, at in named)}</index>'
+        "</indexList>"
+    ).encode()
+
+    index_list_offset = len(prefix)
+    tail = index_xml + f"<indexListOffset>{index_list_offset}</indexListOffset>".encode()
+    checksum = hashlib.sha1(prefix + tail + b"<fileChecksum>").hexdigest()  # noqa: S324 - the mzML spec says SHA-1
+    path.write_bytes(prefix + tail + f"<fileChecksum>{checksum}</fileChecksum></indexedmzML>\n".encode())
+    plain.unlink()
     return path

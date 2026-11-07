@@ -13,7 +13,7 @@ import paftacular as pft
 import peptacular as pt
 import pytest
 import spxtacular as spx
-from conftest import PACKAGES, SyntheticScan, write_mzml
+from conftest import PACKAGES, SyntheticScan, write_indexed_mzml, write_mzml
 
 PEPTIDE = "PEPT[Phospho]IDEM[Oxidation]K/2"
 TOL_PPM = 5.0
@@ -187,3 +187,90 @@ def test_mzmlpy_validates_its_own_example(tmp_path):
     shutil.copyfile(source, copy)
     report = mzmlpy.validate(str(copy), decode_binary=True)
     assert report.valid, report.issues
+
+
+# --------------------------------------------------------------------------------------
+# An indexedmzML whose offset index names fewer spectra than the document holds. The
+# document is the authority and the index is a cache of it, so every lookup must answer
+# from the document; and the shortness must be reported rather than silently repaired.
+# --------------------------------------------------------------------------------------
+
+INDEXED_SCANS = 5
+INDEX_ENTRIES = 3
+
+
+@pytest.fixture
+def indexed_pair(tmp_path):
+    scans = [
+        SyntheticScan(
+            mz=np.array([100.0 + i, 200.0 + i, 300.0 + i]),
+            intensity=np.array([10.0 + i, 20.0 + i, 30.0 + i]),
+            ms_level=1 if i == 0 else 2,
+            rt_seconds=60.0 + i,
+            precursor_mz=None if i == 0 else 500.0 + i,
+            precursor_charge=None if i == 0 else 2,
+        )
+        for i in range(INDEXED_SCANS)
+    ]
+    full = write_indexed_mzml(tmp_path / "full.mzML", scans)
+    short = write_indexed_mzml(tmp_path / "short.mzML", scans, index_entries=INDEX_ENTRIES)
+    return scans, full, short
+
+
+def _answers(path):
+    """Every way of asking the reader how many spectra there are, and for the last one."""
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)  # the reader warns that it is rebuilding
+        with mzmlpy.Mzml(str(path)) as reader:
+            spectra = reader.spectra
+            last_id = f"scan={INDEXED_SCANS}"
+            return {
+                "len": len(spectra),
+                "ids": len(spectra.ids),
+                "iterated": sum(1 for _ in spectra),
+                "contains_last": last_id in spectra,
+                "by_id_mz": np.asarray(spectra[last_id].mz).tolist(),
+                "by_position_mz": np.asarray(spectra[INDEXED_SCANS - 1].mz).tolist(),
+            }
+
+
+def test_a_short_offset_index_changes_no_answer(indexed_pair):
+    """``len``, ``ids``, ``in``, iteration, id lookup and position lookup must all agree.
+
+    An index that names three of five spectra used to be believed by the lookups while
+    iteration streamed the document, so the two halves of the reader answered the same
+    file differently and the spectra past the index were reachable by no key. Asking the
+    same six questions of both files is the check: the only difference between them is
+    the index, so any disagreement is the index being treated as authoritative.
+    """
+    scans, full, short = indexed_pair
+    assert _answers(short) == _answers(full)
+
+    answers = _answers(short)
+    assert answers["len"] == INDEXED_SCANS
+    assert answers["len"] > INDEX_ENTRIES  # the file is genuinely short-indexed
+    assert answers["by_id_mz"] == scans[-1].mz.tolist()
+    assert answers["by_position_mz"] == scans[-1].mz.tolist()
+
+
+def test_a_short_offset_index_is_reported_not_silently_repaired(indexed_pair):
+    """Rebuilding from the document is the right answer; doing it quietly is not.
+
+    The repair is what makes the lookups correct, which means no count and no peak
+    comparison can detect that the file was malformed - this is the only assertion in the
+    pair that can.
+    """
+    _, full, short = indexed_pair
+    assert [issue.code for issue in mzmlpy.validate(str(full), decode_binary=True).issues] == []
+    assert [issue.code for issue in mzmlpy.validate(str(short), decode_binary=True).issues] == ["index_ids_mismatch"]
+
+
+def test_spxtacular_reads_past_a_short_offset_index(indexed_pair):
+    scans, _, short = indexed_pair
+    expected = [scan for scan in scans if scan.ms_level == 2]
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)
+        with spx.MzmlReader(short) as reader:
+            read = list(reader.ms2)
+    assert len(read) == len(expected)
+    np.testing.assert_array_equal(read[-1].mz, expected[-1].mz)
