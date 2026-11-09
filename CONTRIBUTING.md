@@ -44,3 +44,8 @@ request that raises a floor should say which release of that package it needs an
 
 Do not change the version of tacular-omics itself, and do not add a version heading to
 `CHANGELOG.md`. Put your entry under `## [Unreleased]`.
+
+`CLAUDE.md` is the maintained developer guide for this repository: the member list, the
+pin policy and the cross-package test suite. Read it before a larger change, and update it
+in the same pull request when your change makes part of it wrong. AI-assisted
+contributions are welcome; you are responsible for reviewing and testing what you submit.
