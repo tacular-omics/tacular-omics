@@ -7,17 +7,17 @@ requires-python = ">=3.12"
 # The tested set of released member packages. Each has a floor (the release this set
 # was tested with) and a cap (the next major, or next minor for 0.x packages).
 dependencies = [
-    "tacular>=2.1.0,<3",
-    "psimodpy>=1.2.0,<2",
-    "unimodpy>=1.2.0,<2",
-    "uniprotptmpy>=1.2.0,<2",
-    "fastatacular>=1.4.1,<2",
-    "pefftacular>=1.2.2,<2",
-    "mzmlpy>=0.10.3,<0.11",
-    "tdfpy>=5.1.0,<6",
-    "peptacular>=5.1.0,<6",
-    "paftacular>=2.1.0,<3",
-    "spxtacular>=0.9.4,<0.10",
+    "tacular>=2.2.1,<3",
+    "psimodpy>=1.3.0,<2",
+    "unimodpy>=1.3.0,<2",
+    "uniprotptmpy>=1.3.0,<2",
+    "fastatacular>=1.5.1,<2",
+    "pefftacular>=1.4.1,<2",
+    "mzmlpy>=0.11.0,<0.12",
+    "tdfpy>=5.2.0,<6",
+    "peptacular>=5.2.0,<6",
+    "paftacular>=2.2.0,<3",
+    "spxtacular>=0.10.0,<0.11",
 ]
 authors = [
     { name = "Patrick Garrett", email = "pgarrett@scripps.edu" }
@@ -42,22 +42,22 @@ classifiers = [
 [project.optional-dependencies]
 # The MCP servers of every member package that ships one.
 mcp = [
-    "psimodpy[server]>=1.2.0,<2",
-    "unimodpy[server]>=1.2.0,<2",
-    "uniprotptmpy[server]>=1.2.0,<2",
-    "mzmlpy[mcp]>=0.10.3,<0.11",
-    "tdfpy[mcp]>=5.1.0,<6",
-    "peptacular[mcp]>=5.1.0,<6",
-    "paftacular[mcp]>=2.1.0,<3",
+    "psimodpy[server]>=1.3.0,<2",
+    "unimodpy[server]>=1.3.0,<2",
+    "uniprotptmpy[server]>=1.3.0,<2",
+    "mzmlpy[mcp]>=0.11.0,<0.12",
+    "tdfpy[mcp]>=5.2.0,<6",
+    "peptacular[mcp]>=5.2.0,<6",
+    "paftacular[mcp]>=2.2.0,<3",
 ]
 # Every optional feature of every member package.
 all = [
     "tacular-omics[mcp]",
-    "mzmlpy[numpress,rapidgzip,zstd]>=0.10.3,<0.11",
-    "tdfpy[viz]>=5.1.0,<6",
-    "peptacular[interop]>=5.1.0,<6",
-    "paftacular[all]>=2.1.0,<3",
-    "spxtacular[all]>=0.9.4,<0.10",
+    "mzmlpy[numpress,rapidgzip,zstd]>=0.11.0,<0.12",
+    "tdfpy[viz]>=5.2.0,<6",
+    "peptacular[interop]>=5.2.0,<6",
+    "paftacular[all]>=2.2.0,<3",
+    "spxtacular[all]>=0.10.0,<0.11",
 ]
 
 [project.scripts]

@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.3.0] (2026-11-17)
+
+### Changed
+
+- Raises every member floor to its 2026-11-16 release: tacular 2.2.1, psimodpy 1.3.0,
+  unimodpy 1.3.0, uniprotptmpy 1.3.0, fastatacular 1.5.1, pefftacular 1.4.1, mzmlpy 0.11.0,
+  tdfpy 5.2.0, peptacular 5.2.0, paftacular 2.2.0 and spxtacular 0.10.0. Two caps move with
+  the new minor versions of the 0.x members: mzmlpy to `<0.12` and spxtacular to `<0.11`.
+  spxtacular 0.10 writes spectrum JSON schema version 3, which spxtacular 0.9 cannot read.
+
 ## [0.2.3] (2026-11-07)
 
 ### Changed
