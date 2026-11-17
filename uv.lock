@@ -701,11 +701,11 @@ wheels = [
 
 [[package]]
 name = "fastatacular"
-version = "1.4.1"
+version = "1.5.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/ca/ec/e33244892aca51408a33e29ac9671d54507d07e9db7a61429f7700d6e227/fastatacular-1.4.1.tar.gz", hash = "sha256:0249a956a9a0f5dbdd9f0abd8d554db8251af450a35c38d1567c6940af2de617", size = 165937, upload-time = "2026-11-07T18:30:47.592Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/cf/41/20afce4b5952e8cbeff239be62b66ea9efb37dcf8721e34928ee45cd3426/fastatacular-1.5.1.tar.gz", hash = "sha256:c33e7bae7d63fb1449d03beaee021b2448bd3110e31656291d0a85e5877ebf60", size = 175260, upload-time = "2026-11-17T04:11:55.776Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ff/a0/293f4b38a6f1570d4f451f6f6521b6d4a964e3d4367d6d3f4990822df652/fastatacular-1.4.1-py3-none-any.whl", hash = "sha256:3f8ac05395e312c463730ba312d9e41ec0d320ea8a7ce54e933b6fa8a3c6e551", size = 117899, upload-time = "2026-11-07T18:30:46.323Z" },
+    { url = "https://files.pythonhosted.org/packages/1d/fa/60daec62e1b9bb5bd4239168faf5cc733ebc961530e91169c1c40e5bb4f8/fastatacular-1.5.1-py3-none-any.whl", hash = "sha256:e32c52ded8f51999dde79cc3fb88fdf3a43a2a4c47e46f45b539b5c222bbfaa7", size = 121487, upload-time = "2026-11-17T04:11:54.384Z" },
 ]
 
 [[package]]
@@ -1464,14 +1464,14 @@ wheels = [
 
 [[package]]
 name = "mzmlpy"
-version = "0.10.3"
+version = "0.11.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/dc/57/cf9fb78a446453195fc1fee1b2a45638832d41b614fd11688236c7b50c42/mzmlpy-0.10.3.tar.gz", hash = "sha256:eb65fefa7e626b25555c07aac99c0046e98274982b838e9fc62c100cd9060ec8", size = 112977, upload-time = "2026-11-07T18:27:08.244Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d5/3b/6be65d42559b882e57089c3d207f745c5455ec8a0b36fb8edb0192856cca/mzmlpy-0.11.0.tar.gz", hash = "sha256:850b2fdc4f84cad1f514cf69f4212495f9647431bd33ab23e728fe59fcf5aa22", size = 115160, upload-time = "2026-11-17T04:11:40.665Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2e/be/1649c37bb8c2d50aed6c69107895c39a57954d7e1fa23ae2fe7517643e18/mzmlpy-0.10.3-py3-none-any.whl", hash = "sha256:c9694bf1a110b59802fcf867bda418db3fb58fd5f153b10ec94a693b1cca08a7", size = 116535, upload-time = "2026-11-07T18:27:06.557Z" },
+    { url = "https://files.pythonhosted.org/packages/6a/50/6cd8703e7fbeb8806f55ed0543c4800781dfa6f806c0cae452fb244857e0/mzmlpy-0.11.0-py3-none-any.whl", hash = "sha256:be20746ac671ffdcb73fe13479fb04780bf3833d146334a29cdf7835bb3c9284", size = 118183, upload-time = "2026-11-17T04:11:39.366Z" },
 ]
 
 [package.optional-dependencies]
@@ -1684,14 +1684,14 @@ wheels = [
 
 [[package]]
 name = "paftacular"
-version = "2.1.0"
+version = "2.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "tacular" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c3/57/13a6ebda6899e7192175b268803875d1561be1ca132bfdd3803a0238fc94/paftacular-2.1.0.tar.gz", hash = "sha256:aa7d712087d9dd28b6f843819afcb3f0caf58250c19ddb05295f34c21e87534b", size = 135612, upload-time = "2026-11-07T18:28:51.567Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/96/88/98721fcc9a4f7b667eab0e99b5fb6793b66f7c17bd4d7aeac5807c11bb09/paftacular-2.2.0.tar.gz", hash = "sha256:f8af3add3e5b24b5a94060e05a12483adf16251923b6aa14ea598d9fa353396e", size = 142880, upload-time = "2026-11-17T04:12:16.118Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/cb/e9/d6dac37b1ab1eff7a721f7b018eb28d85cb2ddd45b9f7b1e6b856db28a07/paftacular-2.1.0-py3-none-any.whl", hash = "sha256:cda3162f02eff99a678ae01c4b6605aea4d900870ad5fd04e139715838011f40", size = 59950, upload-time = "2026-11-07T18:28:50.007Z" },
+    { url = "https://files.pythonhosted.org/packages/73/2b/95844a4cf2f53d44a46a057412efa208e6a8398df85efabdfdcbab825138/paftacular-2.2.0-py3-none-any.whl", hash = "sha256:3bf1ad1f0651f350f88bbd16e4f395005c9c4b2c3f6be5a4a40e5a80783fc4d5", size = 60947, upload-time = "2026-11-17T04:12:14.746Z" },
 ]
 
 [package.optional-dependencies]
@@ -1771,23 +1771,23 @@ wheels = [
 
 [[package]]
 name = "pefftacular"
-version = "1.2.2"
+version = "1.4.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/6f/7d/a6a92ee430bdc93b698b8c84bd6bcefbe1e6a1e0213e0d4b7a81c10477e0/pefftacular-1.2.2.tar.gz", hash = "sha256:53740528c255b0228c6531cebd5dcb8d003fb54d648f4155d33bbb786a7b108c", size = 343045, upload-time = "2026-11-07T18:27:30.349Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/88/19/5c7377f9b77ac4aaecd2c67f1c68dbacc0470b34a1fed3da8a73ae728fcd/pefftacular-1.4.1.tar.gz", hash = "sha256:feb5c51e3f66d023c5e891624508bb46d26c57c89b5498fb51b7d273959b1dfd", size = 377415, upload-time = "2026-11-17T04:58:47.832Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/85/db/fe68e87b6692f325bcaa677e1bfe79356380da576771dd8f54e49a558e32/pefftacular-1.2.2-py3-none-any.whl", hash = "sha256:5e2e230e30fa56e6f51285ae1832d83c8ff8f2dcb05fba04fb5925d210404981", size = 48682, upload-time = "2026-11-07T18:27:28.796Z" },
+    { url = "https://files.pythonhosted.org/packages/9f/cd/b94f714d8d86b21d16189ab5e7d7a778b0c7020e19ae791ecb29bd0b28f5/pefftacular-1.4.1-py3-none-any.whl", hash = "sha256:3e01ab24311cc54a2b9e722719126d527c98929b402cb92653e7c494f8d2614d", size = 65232, upload-time = "2026-11-17T04:58:46.16Z" },
 ]
 
 [[package]]
 name = "peptacular"
-version = "5.1.0"
+version = "5.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "tacular" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/14/10/afdcb35b2fc168a88b50835779102ed8134a70e7b3a96aaccf45139c5a74/peptacular-5.1.0.tar.gz", hash = "sha256:711f5e9abeb257499765f153afbb7514e6ead3af3ce0338b20f26352be114f18", size = 588480, upload-time = "2026-11-07T18:28:51.138Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ec/5b/b4aa4af4c3564f32f2f517b8db470180b98d62d742dc14c2f87ae85e6df4/peptacular-5.2.0.tar.gz", hash = "sha256:10a22de4808a9d5df062ca7da2d1d601ef8f1e072a1320cb9ddfc63146426c61", size = 630590, upload-time = "2026-11-17T04:59:05.167Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a3/b8/47c4325ca10a8763b2453a0f772689dfde1e2c9bf4428467c1bd6311ef5b/peptacular-5.1.0-py3-none-any.whl", hash = "sha256:68b4b3c4cda24f402b29e0ab049117270207147fa22c49b7da06ff10dbc0dffa", size = 277629, upload-time = "2026-11-07T18:28:49.633Z" },
+    { url = "https://files.pythonhosted.org/packages/a0/d7/2e8f8e79f5a235422967419d2665c0548b5e9393ff3f63e8cbc4911a4b35/peptacular-5.2.0-py3-none-any.whl", hash = "sha256:f28d909e19ffc8a0ba9c0235ce3240d55f88d9c60cea4bbd37b4b722849ac248", size = 293463, upload-time = "2026-11-17T04:59:03.753Z" },
 ]
 
 [package.optional-dependencies]
@@ -1915,11 +1915,11 @@ wheels = [
 
 [[package]]
 name = "psimodpy"
-version = "1.2.0"
+version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/5c/0c/9673149ff855b2ec7fc143ec7b049fd8c1ace2832a3c5fd18078d2ce57a5/psimodpy-1.2.0.tar.gz", hash = "sha256:62c4d6297097e90df9f527da9b5431d8846abff82c91591e0d7b063867bd830e", size = 314197, upload-time = "2026-11-07T18:27:30.123Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d9/e9/b4f17ba8d95598b276fa02c3118d589b605888160d7df8709f738d176274/psimodpy-1.3.0.tar.gz", hash = "sha256:1f2b18b62327a92b9f00e00016e8cb1e1f10cd78287d4352f50e9055d8f47118", size = 343541, upload-time = "2026-11-17T03:39:09.915Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/47/8b/399d5bbe97baaf51b5c3f380caae6093f7406272da652da77a01911b5b66/psimodpy-1.2.0-py3-none-any.whl", hash = "sha256:267c0de110923b14eec5ba07fef94089e018e0224d322bb36f09c5d877aa7fa6", size = 288032, upload-time = "2026-11-07T18:27:28.402Z" },
+    { url = "https://files.pythonhosted.org/packages/ff/ac/bf10fb25d35821b23abf733f399ff1b3bf9b74df68bd78b815afc2c57e2d/psimodpy-1.3.0-py3-none-any.whl", hash = "sha256:55c10d575922eca20868d26103e3bce330bdd7dff881864311f1655d41d9e7d8", size = 292931, upload-time = "2026-11-17T03:39:08.284Z" },
 ]
 
 [package.optional-dependencies]
@@ -2925,7 +2925,7 @@ wheels = [
 
 [[package]]
 name = "spxtacular"
-version = "0.9.4"
+version = "0.10.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
@@ -2935,9 +2935,9 @@ dependencies = [
     { name = "plotly" },
     { name = "tacular" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ab/23/d0cc7082385bd3c2d78c6bf733093af84c4ba15e70607a6dc752ad0b5da3/spxtacular-0.9.4.tar.gz", hash = "sha256:9c49dc20f6b923c2cc007ceea853e0e0985eae6a48c47d0f899ba836c538d540", size = 267672, upload-time = "2026-11-07T19:04:57.005Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f6/1d/3fe8bba6c62547eae460055d237f99b64f4dc4f69b71292742ab24895ac5/spxtacular-0.10.0.tar.gz", hash = "sha256:2b6b68e3988d4a29478e0a37b0913ec18e31690094db811e08df42abc5a1d703", size = 292016, upload-time = "2026-11-17T18:59:34.564Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/c8/8e/82bfd21bee1bc9a405d075cb875cd35414d1a445a778673997319183b1da/spxtacular-0.9.4-py3-none-any.whl", hash = "sha256:033110d68bade60fd922f8bcb5fdb9f98fa4f046236c2cacafb6bce8b54c6a85", size = 270651, upload-time = "2026-11-07T19:04:55.158Z" },
+    { url = "https://files.pythonhosted.org/packages/6b/6d/b94ef3f76e387f7a2b714b0932d6ea4e21941a49f888ce27a345f4c166f0/spxtacular-0.10.0-py3-none-any.whl", hash = "sha256:6efd616d3af40c100dc99f2c231ae96a11710be8b9930163b921a2c8b191e970", size = 288714, upload-time = "2026-11-17T18:59:33.055Z" },
 ]
 
 [package.optional-dependencies]
@@ -3054,11 +3054,11 @@ wheels = [
 
 [[package]]
 name = "tacular"
-version = "2.1.0"
+version = "2.2.1"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/89/76/87dad39e8da779f6b5f5772a9dcd621e3687abe435110bb25e27ba574206/tacular-2.1.0.tar.gz", hash = "sha256:f36f66cbecc6b7674cf003bd90f4ace1f4b09c91b6fc18baac4fb129f5bd30bd", size = 602615, upload-time = "2026-11-07T18:27:44.392Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/10/b5/b665e0fc2599393e509ce011948bb3cd18876ca2c93b20728a94a0fe8593/tacular-2.2.1.tar.gz", hash = "sha256:cf6307b706eabbc4652052a87ac7599fb28d8eac92226e72919bfd54bb973ae7", size = 609225, upload-time = "2026-11-17T04:11:52.385Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/23/81/5614662c6b8083f7d50ce240720761e6d491408287c959d8a5af0e6ce6d5/tacular-2.1.0-py3-none-any.whl", hash = "sha256:02151bd3bde88663b8b98f804682fd515953a316bd81af4eb558ac7a9016e85e", size = 444024, upload-time = "2026-11-07T18:27:42.834Z" },
+    { url = "https://files.pythonhosted.org/packages/6d/bd/1aeeaa0757d5581ab3c621a57bbe42886a99204968d27d94be5a65080375/tacular-2.2.1-py3-none-any.whl", hash = "sha256:2ddc7e8940a85210ba9c5be63b1e8148e224fa9b647c5b4146a68945adfbd5a0", size = 446769, upload-time = "2026-11-17T04:11:50.82Z" },
 ]
 
 [[package]]
@@ -3111,36 +3111,36 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "fastatacular", specifier = ">=1.4.1,<2" },
-    { name = "mzmlpy", specifier = ">=0.10.3,<0.11" },
-    { name = "mzmlpy", extras = ["mcp"], marker = "extra == 'all'", specifier = ">=0.10.3,<0.11" },
-    { name = "mzmlpy", extras = ["mcp"], marker = "extra == 'mcp'", specifier = ">=0.10.3,<0.11" },
-    { name = "mzmlpy", extras = ["numpress", "rapidgzip", "zstd"], marker = "extra == 'all'", specifier = ">=0.10.3,<0.11" },
-    { name = "paftacular", specifier = ">=2.1.0,<3" },
-    { name = "paftacular", extras = ["all"], marker = "extra == 'all'", specifier = ">=2.1.0,<3" },
-    { name = "paftacular", extras = ["mcp"], marker = "extra == 'all'", specifier = ">=2.1.0,<3" },
-    { name = "paftacular", extras = ["mcp"], marker = "extra == 'mcp'", specifier = ">=2.1.0,<3" },
-    { name = "pefftacular", specifier = ">=1.2.2,<2" },
-    { name = "peptacular", specifier = ">=5.1.0,<6" },
-    { name = "peptacular", extras = ["interop"], marker = "extra == 'all'", specifier = ">=5.1.0,<6" },
-    { name = "peptacular", extras = ["mcp"], marker = "extra == 'all'", specifier = ">=5.1.0,<6" },
-    { name = "peptacular", extras = ["mcp"], marker = "extra == 'mcp'", specifier = ">=5.1.0,<6" },
-    { name = "psimodpy", specifier = ">=1.2.0,<2" },
-    { name = "psimodpy", extras = ["server"], marker = "extra == 'all'", specifier = ">=1.2.0,<2" },
-    { name = "psimodpy", extras = ["server"], marker = "extra == 'mcp'", specifier = ">=1.2.0,<2" },
-    { name = "spxtacular", specifier = ">=0.9.4,<0.10" },
-    { name = "spxtacular", extras = ["all"], marker = "extra == 'all'", specifier = ">=0.9.4,<0.10" },
-    { name = "tacular", specifier = ">=2.1.0,<3" },
-    { name = "tdfpy", specifier = ">=5.1.0,<6" },
-    { name = "tdfpy", extras = ["mcp"], marker = "extra == 'all'", specifier = ">=5.1.0,<6" },
-    { name = "tdfpy", extras = ["mcp"], marker = "extra == 'mcp'", specifier = ">=5.1.0,<6" },
-    { name = "tdfpy", extras = ["viz"], marker = "extra == 'all'", specifier = ">=5.1.0,<6" },
-    { name = "unimodpy", specifier = ">=1.2.0,<2" },
-    { name = "unimodpy", extras = ["server"], marker = "extra == 'all'", specifier = ">=1.2.0,<2" },
-    { name = "unimodpy", extras = ["server"], marker = "extra == 'mcp'", specifier = ">=1.2.0,<2" },
-    { name = "uniprotptmpy", specifier = ">=1.2.0,<2" },
-    { name = "uniprotptmpy", extras = ["server"], marker = "extra == 'all'", specifier = ">=1.2.0,<2" },
-    { name = "uniprotptmpy", extras = ["server"], marker = "extra == 'mcp'", specifier = ">=1.2.0,<2" },
+    { name = "fastatacular", specifier = ">=1.5.1,<2" },
+    { name = "mzmlpy", specifier = ">=0.11.0,<0.12" },
+    { name = "mzmlpy", extras = ["mcp"], marker = "extra == 'all'", specifier = ">=0.11.0,<0.12" },
+    { name = "mzmlpy", extras = ["mcp"], marker = "extra == 'mcp'", specifier = ">=0.11.0,<0.12" },
+    { name = "mzmlpy", extras = ["numpress", "rapidgzip", "zstd"], marker = "extra == 'all'", specifier = ">=0.11.0,<0.12" },
+    { name = "paftacular", specifier = ">=2.2.0,<3" },
+    { name = "paftacular", extras = ["all"], marker = "extra == 'all'", specifier = ">=2.2.0,<3" },
+    { name = "paftacular", extras = ["mcp"], marker = "extra == 'all'", specifier = ">=2.2.0,<3" },
+    { name = "paftacular", extras = ["mcp"], marker = "extra == 'mcp'", specifier = ">=2.2.0,<3" },
+    { name = "pefftacular", specifier = ">=1.4.1,<2" },
+    { name = "peptacular", specifier = ">=5.2.0,<6" },
+    { name = "peptacular", extras = ["interop"], marker = "extra == 'all'", specifier = ">=5.2.0,<6" },
+    { name = "peptacular", extras = ["mcp"], marker = "extra == 'all'", specifier = ">=5.2.0,<6" },
+    { name = "peptacular", extras = ["mcp"], marker = "extra == 'mcp'", specifier = ">=5.2.0,<6" },
+    { name = "psimodpy", specifier = ">=1.3.0,<2" },
+    { name = "psimodpy", extras = ["server"], marker = "extra == 'all'", specifier = ">=1.3.0,<2" },
+    { name = "psimodpy", extras = ["server"], marker = "extra == 'mcp'", specifier = ">=1.3.0,<2" },
+    { name = "spxtacular", specifier = ">=0.10.0,<0.11" },
+    { name = "spxtacular", extras = ["all"], marker = "extra == 'all'", specifier = ">=0.10.0,<0.11" },
+    { name = "tacular", specifier = ">=2.2.1,<3" },
+    { name = "tdfpy", specifier = ">=5.2.0,<6" },
+    { name = "tdfpy", extras = ["mcp"], marker = "extra == 'all'", specifier = ">=5.2.0,<6" },
+    { name = "tdfpy", extras = ["mcp"], marker = "extra == 'mcp'", specifier = ">=5.2.0,<6" },
+    { name = "tdfpy", extras = ["viz"], marker = "extra == 'all'", specifier = ">=5.2.0,<6" },
+    { name = "unimodpy", specifier = ">=1.3.0,<2" },
+    { name = "unimodpy", extras = ["server"], marker = "extra == 'all'", specifier = ">=1.3.0,<2" },
+    { name = "unimodpy", extras = ["server"], marker = "extra == 'mcp'", specifier = ">=1.3.0,<2" },
+    { name = "uniprotptmpy", specifier = ">=1.3.0,<2" },
+    { name = "uniprotptmpy", extras = ["server"], marker = "extra == 'all'", specifier = ">=1.3.0,<2" },
+    { name = "uniprotptmpy", extras = ["server"], marker = "extra == 'mcp'", specifier = ">=1.3.0,<2" },
 ]
 provides-extras = ["all", "mcp"]
 
@@ -3156,7 +3156,7 @@ dev = [
 
 [[package]]
 name = "tdfpy"
-version = "5.1.0"
+version = "5.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numba" },
@@ -3164,9 +3164,9 @@ dependencies = [
     { name = "pandas" },
     { name = "zstandard", marker = "python_full_version < '3.14'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/9c/94/a7a4240babf125cb7992baa7481d1c1bd09175379ad34c05bbc67b37383d/tdfpy-5.1.0.tar.gz", hash = "sha256:dd3062839bcfd1bb68b730e0d83083fb5128d2152e4cb0bad6290339176e8b3a", size = 122611, upload-time = "2026-11-07T18:28:47.109Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/bc/09/42acf408c46f1855ed4090c8b00dc1891d1b0d2150561fc276916123039f/tdfpy-5.2.0.tar.gz", hash = "sha256:d2016445f75347ac792c04cc597d5d1c661ba9d624f6c176f344a2707135b08d", size = 132124, upload-time = "2026-11-17T04:13:11.671Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/89/35/3c98cfdc73fdde9797a5c9cad6856de153603eb8471e1958fc8484018adc/tdfpy-5.1.0-py3-none-any.whl", hash = "sha256:e0d53e420abb1edbb4745ecc78120e9c98a4c96bfd16a349d73f1c655da686de", size = 113907, upload-time = "2026-11-07T18:28:45.799Z" },
+    { url = "https://files.pythonhosted.org/packages/9d/f1/3c032f97e2deb5d29a9fab1497b7457d75f0ef9dc8c989d1c797c5893b8b/tdfpy-5.2.0-py3-none-any.whl", hash = "sha256:1bdba638c4279578d418e37a73614f292a87bc6978c0c10f9deb8b14de1b59b6", size = 120988, upload-time = "2026-11-17T04:13:10.183Z" },
 ]
 
 [package.optional-dependencies]
@@ -3265,11 +3265,11 @@ wheels = [
 
 [[package]]
 name = "unimodpy"
-version = "1.2.0"
+version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/96/29/e27ca0924259e03e9bd21d747d90e7b3cbb80cca5abd86c0bd072ea784f4/unimodpy-1.2.0.tar.gz", hash = "sha256:dab0d04fb34d2112ed4faf3c0f9d9ce7ff7b4b5388cacb2eae3a772e7fbc849c", size = 214143, upload-time = "2026-11-07T18:31:03.042Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/c4/5b/3722ea6cbda420b68cb037dd2468ac000dcaa0ae2f698ae03fe02a7e26ad/unimodpy-1.3.0.tar.gz", hash = "sha256:7955817f57ae43c49edfbedb0bc0e277c90300877a7acb242cb5a5aa67f2bed8", size = 241336, upload-time = "2026-11-17T03:39:04.896Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/0f/9b/b18b6724e6f26f4934a7e9aeda98a02794bf5abc8f91ba9db2e5f2727902/unimodpy-1.2.0-py3-none-any.whl", hash = "sha256:7c0f31b98e3ae109d73f7874d655accef4d06f93129d5d656c3307b873525481", size = 186706, upload-time = "2026-11-07T18:31:01.064Z" },
+    { url = "https://files.pythonhosted.org/packages/04/02/1cb3ab7bb05a55023737aed985eaa2b1968f575327ff5f5557ba43ba5174/unimodpy-1.3.0-py3-none-any.whl", hash = "sha256:26eb0eed7ff55442510110cdf9dfbed62c03eb329281e18f10550393f4e4537e", size = 190241, upload-time = "2026-11-17T03:39:03.65Z" },
 ]
 
 [package.optional-dependencies]
@@ -3282,11 +3282,11 @@ server = [
 
 [[package]]
 name = "uniprotptmpy"
-version = "1.2.0"
+version = "1.3.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/b9/36/46a3135af53184950a53cc251c925e52571720b9623160d366717de5f5c9/uniprotptmpy-1.2.0.tar.gz", hash = "sha256:60e8c8b4856df16656f10d681a2917c34314cc5d15c2115b50f097a92abf7c60", size = 113582, upload-time = "2026-11-07T18:28:23.597Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ef/48/0f7c9fb4e1d9a64a6797e0bdb78f46f7334f0fce2c9cd3ce13f89323bcf8/uniprotptmpy-1.3.0.tar.gz", hash = "sha256:b04be1d38eb6fd7cff55d4def904f1872f41d6d868d136f910f306b37536ecc7", size = 132570, upload-time = "2026-11-17T04:12:01.141Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/56/1f/233eb9d57758562890e30e310dd5b552b018c0afc3a6e78c09988ad49fd6/uniprotptmpy-1.2.0-py3-none-any.whl", hash = "sha256:2fc11f8a072e3f002aed5c83b35ef3c9dc81d42385a7dbb88a46ad79f87f406d", size = 84314, upload-time = "2026-11-07T18:28:22.089Z" },
+    { url = "https://files.pythonhosted.org/packages/27/f2/a2a5e3df487bd867b4fd7615261e7a4e0accbee1aac02c0df78818b05798/uniprotptmpy-1.3.0-py3-none-any.whl", hash = "sha256:f33ce99aeace5d678a645ddeb6825848835554c7f84017d97fd73c878822dc28", size = 85123, upload-time = "2026-11-17T04:11:59.821Z" },
 ]
 
 [package.optional-dependencies]

@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [0.3.0] (2026-11-17)
+
 ### Changed
 
 - Raises every member floor to its 2026-11-16 release: tacular 2.2.1, psimodpy 1.3.0,
